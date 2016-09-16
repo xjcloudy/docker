@@ -1,0 +1,10 @@
+ssdb:
+    image: ssdb
+    container_name: ssdb
+    ports:
+        - "8888:8888"
+    environment:
+        TZ: Asia/Chongqing
+    restart: always
+
+
