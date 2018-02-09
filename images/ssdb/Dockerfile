@@ -1,6 +1,4 @@
 FROM  python:2.7-wheezy
-MAINTAINER cloudy "xiejingcloudy@gmail.com"
-
 
 # Set the env variable DEBIAN_FRONTEND to noninteractive
 ENV DEBIAN_FRONTEND noninteractive
