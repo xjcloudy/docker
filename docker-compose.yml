@@ -7,7 +7,7 @@ ssdb:
         TZ: Asia/Shanghai
     restart: always
 php:
-    image: xjcloudy/php5.6
+    image: registry.cn-hangzhou.aliyuncs.com/xjcloudy/php5.6
     container_name: php
     links:
         - "redis"
