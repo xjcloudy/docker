@@ -9,7 +9,7 @@ RUN sed -i "s/deb.debian.org/mirrors.163.com/g" /etc/apt/sources.list && \
 # 安装依赖
 RUN apt-get install -y libcurl4-gnutls-dev libpng-dev libmcrypt-dev libxml2-dev libssl-dev pkg-config
 # 安装扩展
-RUN docker-php-ext-install bcmath pdo_mysql mbstring zip mcrypt xml gd curl mysqli
+RUN docker-php-ext-install bcmath pdo_mysql mbstring zip mcrypt xml gd curl mysqli gd
 # 安装其他扩展
 #redis
 RUN cd ~ && \
@@ -25,9 +25,7 @@ RUN pecl install mongodb && docker-php-ext-enable mongodb
 ADD https://getcomposer.org/download/1.6.3/composer.phar /usr/local/bin/composer 
 RUN chmod +x /usr/local/bin/composer
 
-# 配置
-RUN echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/php.ini
-
+WORKDIR /var/www/workdir
 
 
 
