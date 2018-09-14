@@ -1,17 +1,9 @@
-ssdb:
-    image: xjcloudy/ssdb
-    container_name: ssdb
-    ports:
-        - "8888:8888"
-    environment:
-        TZ: Asia/Shanghai
-    restart: always
 php:
     image: registry.cn-hangzhou.aliyuncs.com/xjcloudy/php5.6
     container_name: php
     links:
         - "redis"
-    volumnes:
+    volumes:
         - ./vols/composer:/root/.composer
         - ./vols/php/php.ini:/usr/local/etc/php/conf.d/php.ini
         - {your workspace}:/var/www/workdir
