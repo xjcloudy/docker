@@ -9,7 +9,7 @@ RUN sed -i "s/deb.debian.org/mirrors.163.com/g" /etc/apt/sources.list && \
 # 安装依赖
 RUN apt-get install -y libcurl4-gnutls-dev libpng-dev libmcrypt-dev libxml2-dev libssl-dev pkg-config
 # 安装扩展
-RUN docker-php-ext-install bcmath pdo_mysql mbstring zip mcrypt xml gd curl mysqli gd
+RUN docker-php-ext-install bcmath pdo_mysql mbstring zip mcrypt xml gd curl mysqli gd pcntl
 # 安装其他扩展
 #redis
 RUN cd ~ && \
