@@ -7,8 +7,9 @@ RUN sed -i "s/deb.debian.org/mirrors.163.com/g" /etc/apt/sources.list && \
     apt-get install -y vim unzip  git 
 
 # 安装依赖
-RUN apt-get install -y libcurl4-gnutls-dev libpng-dev libmcrypt-dev libxml2-dev libssl-dev pkg-config
+RUN apt-get install -y libfreetype6-dev libjpeg-dev libcurl4-gnutls-dev libpng-dev libmcrypt-dev libxml2-dev libssl-dev pkg-config
 # 安装扩展
+RUN docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/includ
 RUN docker-php-ext-install bcmath pdo_mysql mbstring zip mcrypt xml gd curl mysqli gd pcntl
 # 安装其他扩展
 #redis
