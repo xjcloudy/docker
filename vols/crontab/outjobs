@@ -1,0 +1,3 @@
+# 自定义 cron jobs
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin

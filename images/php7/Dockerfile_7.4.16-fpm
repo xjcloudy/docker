@@ -1,9 +1,9 @@
-FROM php:7.3-fpm
+FROM php:7.4.16-fpm
 RUN sed -i "s/deb.debian.org/mirrors.163.com/g" /etc/apt/sources.list && \
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y vim unzip git libpng-dev libfreetype6-dev libjpeg-dev 
-RUN docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/freetype2 --with-png-dir=/usr/include --with-jpeg-dir=/usr/includ
+RUN docker-php-ext-configure gd  --with-freetype  --with-jpeg
 RUN pecl update-channels
 RUN docker-php-source extract
 RUN pecl install -f mongodb && \

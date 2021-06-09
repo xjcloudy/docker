@@ -1,0 +1,15 @@
+FROM php:7.4.16-cli
+RUN sed -i "s/deb.debian.org/mirrors.163.com/g" /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y vim unzip git libpng-dev libfreetype6-dev libjpeg-dev python python-pip cron && \
+    pip install supervisor 
+RUN docker-php-ext-configure gd  --with-freetype --with-jpeg
+RUN docker-php-source extract 
+RUN pecl install -f mongodb && \
+    docker-php-ext-enable mongodb 
+RUN pecl install -f redis xdebug && \
+    docker-php-ext-enable redis xdebug 
+RUN docker-php-ext-install mysqli opcache bcmath gd pdo_mysql && \
+    docker-php-source delete && \
+    cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/conf.d/php.ini
