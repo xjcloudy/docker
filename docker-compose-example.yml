@@ -1,41 +1,98 @@
-php:
-    image: registry.cn-hangzhou.aliyuncs.com/xjcloudy/php5.6
-    container_name: php
-    links:
-        - "redis"
+version: "3.7"
+services:
+  php7:
+    image: registry.cn-hangzhou.aliyuncs.com/xjcloudy/php:7.4.16-fpm
+    container_name: php7
+    depends_on:
+        - redis
+        - mysql
     volumes:
-        - ./vols/composer:/root/.composer
-        - ./vols/php/php.ini:/usr/local/etc/php/conf.d/php.ini
-        - {your workspace}:/var/www/workdir
-        - {your .ssh dir}:/root/.ssh
+        - type: bind
+          source: ./vols/php/php.ini
+          target: /usr/local/etc/php/conf.d/php.ini
+        - type: bind
+          source: ./vols/composer
+          target: /root/.composer
+        - type: bind
+          source: {your workspace}
+          target: /var/www/workdir
+        - type: bind
+          source: {your .ssh dir}
+          target: /root/.ssh
     environment:
         TZ: Asia/Shanghai
     restart: always
-redis:
-    image: redis:3.2
-    container_name: redis
-    ports:
+
+  redis:
+      image: redis:3.2
+      container_name: redis
+      ports:
         - "6379:6379"
-    volumes:
-        - ./vols/redis:/data
-    environment:
+      volumes:
+        - type: bind
+          source: ./vols/redis
+          target: /data
+      environment:
         TZ: Asia/Shanghai
-    restart: always
-nginx:
-    image: nginx:1.14-alpine
-    container_name: nginx
-    links:
-        - php
-    ports:
+      restart: always
+
+  nginx:
+      image: openresty/openresty:centos 
+      container_name: nginx
+      depends_on:
+        - php7
+      ports:
         - "80:80"
         - "443:443"
-    volumes:
-        - {your workspace}:/var/www/workdir
-        - ./vols/nginx/conf.d:/etc/nginx/conf.d
-        - ./vols/nginx/includes:/etc/nginx/includes
-        - ./vols/nginx/logs:/var/log/nginx
-    environment:
+      volumes:
+        - type: bind
+          source: {your workspace}
+          target: /var/www/workdir
+        - type: bind
+          source: ./vols/nginx/conf.d
+          target: /etc/nginx/conf.d
+        - type: bind
+          source: ./vols/nginx/includes
+          target: /etc/nginx/includes
+        - type: bind
+          source: ./vols/nginx/logs
+          target: /usr/local/openresty/nginx/logs
+      environment:
         TZ: Asia/Shanghai
-    restart: always
+      restart: always
+  
+  mysql:
+      image: mysql:5.7.25
+      container_name: mysql
+      volumes:
+        - type: bind
+          source: ./vols/mysql/data
+          target: /var/lib/mysql
+        - type: bind
+          source: ./vols/mysql/conf.d
+          target: /etc/mysql/conf.d
+      environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+        TZ: Asia/Shanghai
+      ports:
+        - "3306:3306"
+      restart: always
+  
+  crontab:
+      container_name: crontab
+      image: registry.cn-hangzhou.aliyuncs.com/xjcloudy/php:cli-7.4.16
+      volumes:
+        - type: bind
+          source: ./vols/php/php.ini
+          target: /usr/local/etc/php/conf.d/php.ini
+        - type: bind
+          source: {your workspace}
+          target: /var/www/workdir
+        - type: bind
+          source: ./vols/crontab
+          target: /etc/supervisor
+      command: supervisord -c /etc/supervisor/supervisor.conf -n
+      restart: always
+
 
 
