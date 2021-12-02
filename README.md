@@ -9,6 +9,8 @@
    docker-compose up -d
 ```
 # 镜像
- - php5.6(阿里云)
+ - php7.4.16-fpm(阿里云)
+ - php7.4.16-cli(阿里云)
+ - mysql
  - nginx
  - redis
